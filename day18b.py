@@ -7,8 +7,7 @@ def parse_expr(s, i, indent):
     result, i = parse_term(s, i, indent + '  ')
     while True:
         if i >= len(s) or s[i] != '*':
-            print(indent + f'-> {result} {i}, "{s[i:]}"')
-            return result, i
+            break
         # consume s[i] == '*'
         i += 1
         subresult, i = parse_term(s, i, indent + '  ')
@@ -21,8 +20,7 @@ def parse_term(s, i, indent):
     result, i = parse_val(s, i, indent + '  ')
     while True:
         if i >= len(s) or s[i] != '+':
-            print(indent + f'-> {result} {i}, "{s[i:]}"')
-            return result, i
+            break
         # consume s[i] == '+'
         i += 1
         subresult, i = parse_val(s, i, indent + '  ')
@@ -38,13 +36,12 @@ def parse_val(s, i, indent):
         result, i = parse_expr(s, i, indent + '  ')
         # consume s[i] == ')'
         i += 1
-        print(indent + f'-> {result} {i}, "{s[i:]}"')
-        return result, i
     else:
         result = int(s[i])
+        # consume s[i] == a digit
         i += 1
-        print(indent + f'-> {result} {i}, "{s[i:]}"')
-        return result, i
+    print(indent + f'-> {result} {i}, "{s[i:]}"')
+    return result, i
 
 def calc(s):
     return parse_expr(s, 0, '')[0]
