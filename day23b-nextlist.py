@@ -11,7 +11,7 @@ cups = list('364297581')
 
 cups = list(map(int, cups))
 
-cup_count = 1000000
+cup_count = 1_000_000
 cup_next = [0] * (cup_count + 1)
 for i, cup in enumerate(cups[:-1]):
     cup_next[cup] = cups[i + 1]
@@ -21,7 +21,7 @@ for i in range(len(cups) + 1, cup_count):
 cup_next[cup_count] = cups[0]
 
 cup = cups[0]
-for move in range(1, 10000000):
+for move in range(1, 10_000_001):
     pick_up = []
     pick_up.append(cup_next[cup])
     pick_up.append(cup_next[pick_up[0]])
