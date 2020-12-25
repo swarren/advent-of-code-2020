@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import data1 as data
+with open("day1.txt") as f:
+    data = map(int, f.read().splitlines())
 
-ds = sorted(data.data)
+ds = sorted(data)
 for i, x in enumerate(ds):
     for j, y in enumerate(ds):
         if j >= i:
@@ -11,5 +12,5 @@ for i, x in enumerate(ds):
             if k >= j:
                 continue
             if x + y + z == 2020:
-                print(x, y, z, x * y * z)
+                print(x * y * z)
                 break
