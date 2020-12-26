@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import data2 as data
+with open("day2.txt") as f:
+    data = f.read()
 
 count = 0
-for entry in data.data.splitlines():
+for entry in data.splitlines():
     policy, password = entry.split(':')
     password = password.strip()
     minmax, character = policy.split(' ')
