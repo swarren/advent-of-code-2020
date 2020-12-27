@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import data3 as data
+with open("day3.txt") as f:
+    data = f.read()
 
 slopes = (
   (1, 1),
@@ -15,7 +16,7 @@ answer = 1
 for dx, dy in slopes:
     count = 0
     xp = 0
-    for yp, entry in enumerate(data.data.splitlines()):
+    for yp, entry in enumerate(data.splitlines()):
         if yp % dy:
             continue
         if entry[xp % len(entry)] == '#':
