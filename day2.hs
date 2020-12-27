@@ -1,41 +1,38 @@
-import qualified Data.Text
-
-data Entry = Entry {
-    cmin :: Int,
-    cmax :: Int,
-    c :: Char,
-    password :: String} deriving (Show)
+import qualified Data.Text as T
+import qualified Data.Text.IO as TIO
 
 -- 9-12 q: qqqxhnhdmqqqqjz
-parseline line =
-    Entry cmin cmax c password
+parseLine :: T.Text -> (Int, Int, Char, T.Text)
+parseLine line =
+    (cmin, cmax, c, password)
     where
-        fields =
-            words $
-            Data.Text.unpack $
-            Data.Text.replace (Data.Text.pack "-") (Data.Text.pack " ") $
-            Data.Text.replace (Data.Text.pack ":") (Data.Text.pack "") $
-            Data.Text.pack $
+        [scmin, scmax, sc, password] =
+            T.words $
+            T.map (\c -> if c == '-' then ' ' else c) $
+            T.filter (\c -> c /= ':') $
             line
-        cmin     = read $ fields !! 0
-        cmax     = read $ fields !! 1
-        c        = head $ fields !! 2
-        password = fields !! 3
+        cmin     = read $ T.unpack $ scmin
+        cmax     = read $ T.unpack $ scmax
+        c        = T.index sc 0
 
+parse :: T.Text -> [(Int, Int, Char, T.Text)]
 parse content =
-    map parseline $
-    lines $
+    map parseLine $
+    T.lines $
     content
 
-entry_match entry =
-    (count >= (cmin entry)) && (count <= (cmax entry))
+entryMatch :: (Int, Int, Char, T.Text) -> Bool
+entryMatch (cmin, cmax, c, password) =
+    (count >= cmin) && (count <= cmax)
     where
-        count = length $ filter (\x -> x == (c entry)) (password entry)
+        count = T.length $ T.filter (\x -> x == c) $ password
 
+answer :: [(Int, Int, Char, T.Text)] -> Int
 answer input =
-    length $ filter entry_match input
+    length $ filter entryMatch input
 
+main :: IO ()
 main = do
-    content <- readFile "day2.txt"
+    content <- TIO.readFile "day2.txt"
     let input = parse content
     putStrLn $ show $ answer input
