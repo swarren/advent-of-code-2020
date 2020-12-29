@@ -24,9 +24,9 @@ parse content =
     T.lines $
     content
 
-wantedKeys :: Set.Set T.Text
+wantedKeys :: [T.Text]
 wantedKeys =
-    Set.fromList $ map T.pack $ [
+    map T.pack $ List.sort $ [
         "byr",
         "iyr",
         "eyr",
@@ -41,7 +41,7 @@ validPassport p =
     validKeys
     where
         p' = (Map.delete $ T.pack "cid") $ p
-        validKeys = (Map.keysSet p') == wantedKeys
+        validKeys = (Map.keys p') == wantedKeys
 
 answer :: [Map.Map T.Text T.Text] -> Int
 answer content =

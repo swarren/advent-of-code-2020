@@ -64,9 +64,9 @@ validField :: (T.Text, T.Text) -> Bool
 validField (f, v) =
     validField' (T.unpack f) v
 
-wantedKeys :: Set.Set T.Text
+wantedKeys :: [T.Text]
 wantedKeys =
-    Set.fromList $ map T.pack $ [
+    map T.pack $ List.sort $ [
         "byr",
         "iyr",
         "eyr",
@@ -81,7 +81,7 @@ validPassport p =
     validKeys && validFields
     where
         p' = (Map.delete $ T.pack "cid") $ p
-        validKeys = (Map.keysSet p') == wantedKeys
+        validKeys = (Map.keys p') == wantedKeys
         validFields = List.and $ map validField $ Map.assocs $ p'
 
 answer :: [Map.Map T.Text T.Text] -> Int
