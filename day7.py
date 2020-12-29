@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import data7 as data
 import re
 
+with open("day7.txt") as f:
+    data = f.read()
+
 rules = []
-for entry in data.data.splitlines():
+for entry in data.splitlines():
     #print(entry)
     entry = entry.strip()
     outer, inner_text = entry[:-1].split('contain')

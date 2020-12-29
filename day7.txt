@@ -1,15 +1,3 @@
-datax = """\
-light red bags contain 1 bright white bag, 2 muted yellow bags.
-dark orange bags contain 3 bright white bags, 4 muted yellow bags.
-bright white bags contain 1 shiny gold bag.
-muted yellow bags contain 2 shiny gold bags, 9 faded blue bags.
-shiny gold bags contain 1 dark olive bag, 2 vibrant plum bags.
-dark olive bags contain 3 faded blue bags, 4 dotted black bags.
-vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
-faded blue bags contain no other bags.
-dotted black bags contain no other bags."""
-
-data = """\
 dotted blue bags contain 3 wavy bronze bags, 5 clear tomato bags.
 mirrored brown bags contain 1 pale teal bag, 3 muted gray bags, 3 dark bronze bags.
 shiny violet bags contain 3 vibrant crimson bags.
@@ -603,4 +591,4 @@ dotted olive bags contain 4 mirrored salmon bags.
 striped gold bags contain 2 clear gray bags, 2 dull yellow bags, 1 dotted black bag, 4 posh red bags.
 wavy gold bags contain 3 bright yellow bags, 3 shiny beige bags.
 shiny tomato bags contain 1 dark turquoise bag, 4 vibrant cyan bags, 4 dotted olive bags, 2 wavy plum bags.
-wavy black bags contain 4 dotted indigo bags, 1 light tan bag, 5 bright cyan bags."""
+wavy black bags contain 4 dotted indigo bags, 1 light tan bag, 5 bright cyan bags.
