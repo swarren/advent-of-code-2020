@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import data5 as data
+with open("day5.txt") as f:
+    data = f.read()
 
 def partition(zc, sz, s):
     val = 0
@@ -12,7 +13,7 @@ def partition(zc, sz, s):
 
 hsn = 0
 found = {}
-for entry in data.data.splitlines():
+for entry in data.splitlines():
     fb = entry[:7]
     fbn = partition('F', 128, fb)
     lr = entry[7:]
