@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-import data4 as data
 import re
+
+with open("day4.txt") as f:
+    data = f.read()
 
 def valid_byr(s):
     try:
@@ -75,20 +77,28 @@ required_fields = {
 
 count = 0
 found_fields = {}
-for entry in data.data.splitlines():
+
+def finish_fields():
+    global count
+    global found_fields
+
+    if 'cid' in found_fields:
+        del found_fields['cid']
+    if len(found_fields) == len(required_fields):
+        valid = True
+        for field, is_valid in required_fields.items():
+            if not is_valid(found_fields[field]):
+                valid = False
+                break
+        if valid:
+            count += 1
+    found_fields = {}
+
+for entry in data.splitlines():
     entry = entry.strip()
     if not entry:
-        if 'cid' in found_fields:
-            del found_fields['cid']
-        if len(found_fields) == len(required_fields):
-            valid = True
-            for field, is_valid in required_fields.items():
-                if not is_valid(found_fields[field]):
-                    valid = False
-                    break
-            if valid:
-                count += 1
-        found_fields = {}
+        finish_fields()
         continue
     found_fields.update({x.split(':')[0]: x.split(':')[1] for x in entry.split(' ')})
+finish_fields()
 print(count)
