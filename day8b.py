@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-import data8 as data
 import re
 
+with open("day8.txt") as f:
+    data = f.read()
+
 instructions = []
-for entry in data.data.splitlines():
+for entry in data.splitlines():
     #print(entry)
     op, val = entry.strip().split()
     val = int(val)
@@ -68,7 +70,7 @@ while True:
         accs[program] = acc
         #print('    ->', pc, acc)
         if pc == len(instructions):
-            print('RESULT', acc)
+            print(acc)
             break
     if pc == len(instructions):
         break
