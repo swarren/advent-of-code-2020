@@ -2,9 +2,6 @@ import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 
-tuple :: [a] -> (a, a)
-tuple (x:y:[]) = (x, y)
-
 parseLine :: T.Text -> (String, Int)
 parseLine line = (ins, param)
     where
