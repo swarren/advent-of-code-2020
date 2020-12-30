@@ -44,13 +44,8 @@ for corrupt in range(len(instructions)):
         programs.append(mod_instructions)
 #print(repr(programs))
 
-ss = [False] * len(instructions)
-seens = []
-for i in range(len(programs)):
-    seens.append(ss[:])
 accs = [0] * len (programs)
 pcs = [0] * len(programs)
-
 ctr = 0
 while True:
     #print('Instruction #', ctr)
@@ -61,10 +56,6 @@ while True:
         acc = accs[program]
         op, val = programs[program][pc]
         #print('   ', op, val, pc, acc)
-        if seens[program][pc]:
-            #print('    Seen')
-            continue
-        seens[program][pc] = True
         opfuncs[op](val)
         pcs[program] = pc
         accs[program] = acc
