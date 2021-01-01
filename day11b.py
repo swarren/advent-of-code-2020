@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import data11 as data
+with open("day11.txt") as f:
+    data = f.read()
 
-grid = data.data.splitlines()
+grid = data.splitlines()
 #print(repr(grid))
 
 def lookup(r, c, grid):
