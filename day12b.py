@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import data12 as data
+with open("day12.txt") as f:
+    data = f.read()
 
 waypoint = [10, 1]
 pos = [0, 0]
@@ -54,7 +55,7 @@ move_funcs = {
 }
 
 #print(pos, waypoint)
-for move in data.data.splitlines():
+for move in data.splitlines():
     #print(move)
     move_funcs[move[0]](move[1:])
     #print(pos, waypoint)

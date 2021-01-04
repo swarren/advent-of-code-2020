@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import data12 as data
+with open("day12.txt") as f:
+    data = f.read()
 
 pos = [0, 0]
 nesw = 'NESW'
@@ -48,7 +49,7 @@ move_funcs = {
 }
 
 #print(pos, nesw[pointing])
-for move in data.data.splitlines():
+for move in data.splitlines():
     #print(move)
     move_funcs[move[0]](move[1:])
     #print(pos, nesw[pointing])
