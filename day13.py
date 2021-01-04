@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 
-import data13 as data
+with open("day13.txt") as f:
+    data = f.read()
+lines = data.splitlines()
+time = int(lines[0])
+busses = lines[1].split(',')
 
-time = data.time
-busses = map(int, filter(lambda x: x != 'x', data.busses))
+busses = map(int, filter(lambda x: x != 'x', busses))
+
 earliest = 0
 earliest_bus = 0
 for bus in busses:

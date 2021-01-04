@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
-import data13 as data
+with open("day13.txt") as f:
+    data = f.read()
+lines = data.splitlines()
+time = int(lines[0])
+busses = lines[1].split(',')
 
-busses = list(map(lambda x: x != 'x' and int(x) or None, data.busses))
+busses = list(map(lambda x: x != 'x' and int(x) or None, busses))
 
 """
 #b0_mult = 0
