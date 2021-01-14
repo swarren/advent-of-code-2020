@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-import data14 as data
 import re
+
+with open("day14.txt") as f:
+    data = f.read()
 
 mem = {}
 def write(addr, mask, value, addri=0):
@@ -22,7 +24,7 @@ def write(addr, mask, value, addri=0):
         write(addr[1:], mask[1:], value, (addri << 1) | addr_bit)
 
 mask = None
-for l in data.data.splitlines():
+for l in data.splitlines():
     if l.startswith('mask'):
         mask = l.split()[2]
     else:
