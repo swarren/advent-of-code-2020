@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 
-import data15 as data
+with open("day15.txt") as f:
+    data = list(map(int, f.read().split(',')))
 
 hist = {}
 
-for pos, val in enumerate(data.data):
+for pos, val in enumerate(data):
     #print(pos, val)
     hist[val] = [pos]
     prev_val = val
 
-for i in range(len(data.data), 2020):
+for i in range(len(data), 2020):
     last_mentions = hist[prev_val]
     #print('    prev_val', prev_val, 'last_mentions', last_mentions)
     if len(last_mentions) < 2:
