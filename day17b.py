@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import data17 as data
+with open("day17.txt") as f:
+    data = f.read().splitlines()
 
 space = {}
 
 y = -1
-for l in data.data.splitlines():
+for l in data:
     y += 1
     for x, c in enumerate(l):
         if c == '#':
@@ -37,7 +38,7 @@ def dump(space):
                 print(l)
     print('')
 
-dump(space)
+#dump(space)
 for i in range(6):
     xps = [coord[0] for coord in space.keys()]
     xmin = min(xps)
