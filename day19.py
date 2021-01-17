@@ -1,10 +1,34 @@
 #!/usr/bin/env python3
 
-import data19 as data
+rules = {}
+messages = []
+def parse_item(s):
+    if s[0] == '"':
+        return s[1]
+    return int(s)
+with open("day19.txt") as f:
+    # 117: "b"
+    # 68: 33 99 | 117 35
+    while True:
+        l = f.readline().strip()
+        if not l:
+            break
+        (s_rnum, s_options) = l.split(': ')
+        ls_options = s_options.split(' | ')
+        options = []
+        for s_option in ls_options:
+            options.append(list(map(parse_item, s_option.split())))
+        rules[int(s_rnum)] = options
+    # abbbaaaaaabbbaabababaaab
+    while True:
+        l = f.readline().strip()
+        if not l:
+            break
+        messages.append(l)
 
 def match(s, i, ruleno, indent):
     #print(indent + f'match(s={s}, i={i}, ruleno={ruleno}, sleft={s[i:]})')
-    for option in data.rules[ruleno]:
+    for option in rules[ruleno]:
         optionmatch = True
         optioni = i
         for nest in option:
@@ -29,7 +53,7 @@ def is_match(s):
     return m and l == len(s)
 
 count = 0
-for s in data.strings:
+for s in messages:
     m = is_match(s)
     print(s, m)
     if m:
