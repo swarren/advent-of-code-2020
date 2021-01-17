@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import data18 as data
+with open("day18.txt") as f:
+    data = f.read().splitlines()
 
 def parse_expr(s, i, indent):
     print(indent + f'parse_expr("{s}", "{s[i:]}", {i})')
@@ -53,6 +54,6 @@ def calc(s):
 #print(calc('((2+4*9)*(6+9*8+6)+6)+2+4*2'))
 
 result = 0
-for expr in data.data.splitlines():
+for expr in data:
     result += calc(expr.replace(' ', ''))
 print(result)

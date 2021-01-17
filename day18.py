@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import data18 as data
+with open("day18.txt") as f:
+    data = f.read().splitlines()
 
 def calc(s):
     i = 0
@@ -35,7 +36,7 @@ def calc(s):
     return result, i
 
 result = 0
-for expr in data.data.splitlines():
+for expr in data:
     val, _ = calc(expr.replace(' ', ''))
     result += val
 print(result)
