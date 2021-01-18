@@ -2,7 +2,9 @@
 
 import functools
 import operator
-import data20 as data
+
+with open("day20.txt") as f:
+    data = f.read().splitlines()
 
 def s2i(s):
     v = 0
@@ -17,7 +19,7 @@ ln = 0
 ts = 0
 ls = 0
 rs = 0
-for l in data.data.splitlines():
+for l in data:
     ln += 1
     #print(ln, l)
     if 'Tile' in l:

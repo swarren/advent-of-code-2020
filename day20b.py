@@ -2,7 +2,9 @@
 
 import functools
 import math
-import data20 as data
+
+with open("day20.txt") as f:
+    data = f.read().splitlines()
 
 def s2i(s):
     v = 0
@@ -76,7 +78,7 @@ tiles = {}
 tile_num = None
 tile_grid = []
 ln = 0
-for l in data.data.splitlines():
+for l in data:
     ln += 1
     #print(ln, l)
     if 'Tile' in l:
