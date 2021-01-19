@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import data21 as data
+with open("day21.txt") as f:
+    data = f.read().splitlines()
 
 recipes = []
 all_ingredients = {}
 all_allergens = {}
-for l in data.data.splitlines():
+for l in data:
     ingredients_l, allergens_l = l.split('(contains ')
     ingredients = ingredients_l.split()
     allergens = allergens_l[:-1].split(', ')
