@@ -1,6 +1,22 @@
 #!/usr/bin/env python3
 
-import data22 as data
+player1 = []
+player2 = []
+with open("day22.txt") as f:
+    # Player 1:
+    f.readline()
+    while True:
+        l = f.readline().strip()
+        if not l:
+            break
+        player1.append(int(l))
+    # Player 1:
+    f.readline()
+    while True:
+        l = f.readline().strip()
+        if not l:
+            break
+        player2.append(int(l))
 
 game_id_ctr = 1
 
@@ -54,7 +70,7 @@ def play_game(p1, p2, game_id):
         #print(f'  game {game_id} winner 2')
         return False, p2
 
-_, cards_winner = play_game(data.player1[:], data.player2[:], game_id_ctr)
+_, cards_winner = play_game(player1[:], player2[:], game_id_ctr)
 #print(cards_winner)
 l = len(cards_winner)
 print(sum(map(lambda ix: (l - ix[0]) * ix[1], enumerate(cards_winner))))
