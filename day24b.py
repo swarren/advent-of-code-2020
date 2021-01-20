@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import data24 as data
+with open("day24.txt") as f:
+    data = f.read().splitlines()
 
 # e, se, sw, w, nw, and ne
 
 black = {}
-for l in data.data.splitlines():
+for l in data:
     #print(l)
     pos = [0, 0]
     li = 0
