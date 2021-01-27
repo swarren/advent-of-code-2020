@@ -9,7 +9,7 @@ parse content = map (read . T.unpack) $ T.splitOn (T.pack ",") content
 
 answer :: [Int] -> Int
 -- FIXME: Nothing is technically potentially wrong
-answer input = iter initWhenSpoken initLastSpoken Maybe.Nothing initIter s
+answer input = iter initWhenSpoken initLastSpoken Maybe.Nothing initIters
     where
         initWhenSpoken = Map.fromList $ zip input [1..]
         initLastSpoken = last input
