@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <numeric>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -23,8 +24,8 @@ void safe_advance(Iterator& it, Iterator const& end, size_t n) {
         ++it;
 }
 
-int countTrees(std::vector<std::string> input, int dX, int dY) {
-    int countTrees = 0;
+long countTrees(std::vector<std::string> input, int dX, int dY) {
+    long countTrees = 0;
     int xIndex = 0;
     for (auto itLine = input.begin(); itLine != input.end(); safe_advance(itLine, input.end(), dY)) {
         if ((*itLine)[xIndex % (*itLine).length()] == '#')
@@ -37,16 +38,21 @@ int countTrees(std::vector<std::string> input, int dX, int dY) {
 int main(void) {
     auto input = readParseInput("../input/day3.txt");
 
-    long answer = 1;
-    std::pair<int, int> slopes[] = {
-        std::make_pair<int, int>(1, 1),
-        std::make_pair<int, int>(3, 1),
-        std::make_pair<int, int>(5, 1),
-        std::make_pair<int, int>(7, 1),
-        std::make_pair<int, int>(1, 2)
+    std::pair<long, long> slopes[] = {
+        std::make_pair<long, long>(1, 1),
+        std::make_pair<long, long>(3, 1),
+        std::make_pair<long, long>(5, 1),
+        std::make_pair<long, long>(7, 1),
+        std::make_pair<long, long>(1, 2)
     };
-    for (auto slope : slopes)
-        answer *= countTrees(input, slope.first, slope.second);
+    std::vector<long> counts;
+    auto genCount = [&input = std::as_const(input)](std::pair<long, long> slope){ return countTrees(input, slope.first, slope.second); };
+    std::transform(std::begin(slopes), std::end(slopes), std::back_inserter(counts), genCount);
+    // It's very important to specify the accumulator type via one of the following methods
+    // (explicit template parameters or explict long initial value, rather than bare "1" as the init value)
+    // or the accumulator will be int by default, and the result will wrap...
+    //long answer = std::accumulate<std::vector<long>::iterator, long>(counts.begin(), counts.end(), 1, std::multiplies<long>());
+    long answer = std::accumulate(counts.begin(), counts.end(), long(1), std::multiplies<long>());
     std::cout << answer << std::endl;
 
     return 0;
