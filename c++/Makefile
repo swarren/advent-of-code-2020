@@ -4,4 +4,4 @@ bins := $(srcs:.cpp=.bin)
 all: $(bins)
 
 %.bin: %.cpp Makefile
-	g++ -std=c++17 -Wall -O2 -o $@ $<
+	clang++-11 -ggdb -std=c++2a -Wall -O2 -o $@ $<
