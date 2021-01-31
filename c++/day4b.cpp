@@ -19,7 +19,7 @@ auto readParseInput(std::string fileName) {
 
     std::string line;
     while (std::getline(file, line)) {
-    auto length = line.length();
+        auto length = line.length();
         if (!length) {
             mPtr = &result.emplace_back();
             continue;
