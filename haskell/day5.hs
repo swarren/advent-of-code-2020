@@ -17,12 +17,7 @@ bin2dec s = List.foldl' (\v c -> v * 2 + c) 0 $ map c2i s
         c2i c = if c == '1' then 1 else 0
 
 seatNumber :: T.Text -> Int
-seatNumber s = sn
-    where
-        v = bin2dec $ T.unpack $ T.map seatCharMap s
-        fb = v `shiftR` 3
-        lr = v .&. 7
-        sn = (fb * 8) + lr
+seatNumber s = bin2dec $ T.unpack $ T.map seatCharMap s
 
 answer :: [T.Text] -> Int
 answer content = List.maximum $ map seatNumber $ content

@@ -1,7 +1,10 @@
+#include <bitset>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
+
+using Bits = std::bitset<26>;
 
 auto readParseInput(std::string fileName) {
     std::ifstream file(fileName);
@@ -19,17 +22,17 @@ auto readParseInput(std::string fileName) {
 int answer(const std::vector<std::string> &input) {
     int result = 0;
 
-    uint32_t accum = 0;
+    Bits accum;
     for (const std::string &s : input) {
         if (!s.length()) {
-            result += __builtin_popcount(accum);
-            accum = 0;
+            result += accum.count();
+            accum.reset();
             continue;
         }
         for (char c : s)
-            accum |= 1 << (c - 'a');
+            accum[c - 'a'] = true;
     }
-    result += __builtin_popcount(accum);
+    result += accum.count();
 
     return result;
 }
