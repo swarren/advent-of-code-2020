@@ -1,6 +1,6 @@
 #!/bin/bash
 
-days=($(seq 9))
+days=($(seq 25))
 parts=("" "b")
 languages=(python:py haskell:hs c++:cpp)
 
@@ -18,7 +18,12 @@ for day in "${days[@]}"; do
         for language in "${languages[@]}"; do
             dir=${language%:*}
             ext=${language#*:}
-            echo -n $(wc -l ${dir}/day${day}${part}.${ext} | awk '{print $1}')
+            file="${dir}/day${day}${part}.${ext}"
+            if [ -f "${file}" ]; then
+                echo -n $(wc -l ${dir}/day${day}${part}.${ext} | awk '{print $1}')
+            else
+                echo -n "0"
+            fi
             echo -n ", "
         done
         echo
