@@ -36,6 +36,7 @@ def iter_grid(grid_in):
 while True:
     ngrid = iter_grid(grid)
     #print(repr(ngrid))
+    print("iter");
     if ngrid == grid:
         break
     grid = ngrid
