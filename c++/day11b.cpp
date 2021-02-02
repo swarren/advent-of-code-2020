@@ -1,15 +1,16 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <string>
 
 using Coord = std::pair<int, int>;
 using Grid = std::map<Coord, bool>;
-using Input = std::tuple<Grid, int, int>;
+using Input = std::tuple<const Grid *, int, int>;
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    Grid grid;
+    Grid *grid = new Grid();
 
     std::string line;
     int lineNum = 0;
@@ -19,7 +20,7 @@ auto readParseInput(std::string fileName) {
         for (auto c : line) {
             if (c == 'L') {
                 Coord coord(lineNum, colNum);
-                grid[coord] = false;
+                (*grid)[coord] = false;
             }
             colNum++;
         }
@@ -30,7 +31,7 @@ auto readParseInput(std::string fileName) {
     return Input(grid, lineNum, colNum);
 }
 
-int calcAdjacentFilled(const Coord coord, const Grid &grid, int maxRayLen) {
+int calcAdjacentFilled(const Coord coord, const Grid *grid, int maxRayLen) {
     int result = 0;
     for (int dy = -1; dy <= 1; ++dy) {
         for (int dx = -1; dx <= 1; ++dx) {
@@ -38,8 +39,8 @@ int calcAdjacentFilled(const Coord coord, const Grid &grid, int maxRayLen) {
                 continue;
             for (int mult = 1; mult <= maxRayLen; ++mult) {
                 Coord newCoord(coord.first + (mult * dy), coord.second + (mult * dx));
-                auto it = grid.find(newCoord);
-                if (it == grid.end())
+                auto it = grid->find(newCoord);
+                if (it == grid->end())
                     continue;
                 bool isOccupied = (*it).second;
                 if (isOccupied)
@@ -51,10 +52,10 @@ int calcAdjacentFilled(const Coord coord, const Grid &grid, int maxRayLen) {
     return result;
 }
 
-Grid iter(const Grid &grid, int maxRayLen) {
-    Grid newGrid;
+Grid *iter(const Grid *grid, int maxRayLen) {
+    Grid *newGrid = new Grid();
 
-    for (auto seatInfo : grid) {
+    for (auto seatInfo : *grid) {
         Coord coord = seatInfo.first;
         bool isOccupied = seatInfo.second;
         int adjacentFilled = calcAdjacentFilled(coord, grid, maxRayLen);
@@ -66,23 +67,23 @@ Grid iter(const Grid &grid, int maxRayLen) {
             if (adjacentFilled == 0)
                 newOccupied = true;
         }
-        newGrid[coord] = newOccupied;
+        (*newGrid)[coord] = newOccupied;
     }
 
     return newGrid;
 }
 
 int answer(const Input &input) {
-    Grid grid = std::get<0>(input);
+    std::shared_ptr<const Grid> grid(std::get<0>(input));
     int height = std::get<1>(input);
     int width = std::get<2>(input);
     int maxRayLen = std::max(height, width);
 
     while (true) {
-        Grid newGrid = iter(grid, maxRayLen);
-        if (newGrid == grid) {
+        std::shared_ptr<const Grid> newGrid(iter(grid.get(), maxRayLen));
+        if (*(newGrid.get()) == *(grid.get())) {
             int full = 0;
-            for (auto seatInfo : grid) {
+            for (auto seatInfo : *grid) {
                 bool isOccupied = seatInfo.second;
                 if (isOccupied)
                     full++;
@@ -94,7 +95,6 @@ int answer(const Input &input) {
 }
 
 int main(void) {
-    const Input &input = readParseInput("../input/day11.txt");
-    std::cout << answer(input) << '\n';
+    std::cout << answer(readParseInput("../input/day11.txt")) << '\n';
     return 0;
 }

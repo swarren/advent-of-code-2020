@@ -1,14 +1,15 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <string>
 
 using Coord = std::pair<int, int>;
 using Grid = std::map<Coord, bool>;
 
-auto readParseInput(std::string fileName) {
+Grid *readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    Grid input;
+    Grid *grid = new Grid();
 
     std::string line;
     int lineNum = 0;
@@ -17,7 +18,7 @@ auto readParseInput(std::string fileName) {
         for (auto c : line) {
             if (c == 'L') {
                 Coord coord(lineNum, colNum);
-                input[coord] = false;
+                (*grid)[coord] = false;
             }
             colNum++;
         }
@@ -25,18 +26,18 @@ auto readParseInput(std::string fileName) {
     }
     file.close();
 
-    return input;
+    return grid;
 }
 
-int calcAdjacentFilled(const Coord coord, const Grid &grid) {
+int calcAdjacentFilled(const Coord coord, const Grid *grid) {
     int result = 0;
     for (int dy = -1; dy <= 1; ++dy) {
         for (int dx = -1; dx <= 1; ++dx) {
             if ((dy == 0) && (dx == 0))
                 continue;
             Coord newCoord(coord.first + dy, coord.second + dx);
-            auto it = grid.find(newCoord);
-            if (it == grid.end())
+            auto it = grid->find(newCoord);
+            if (it == grid->end())
                 continue;
             bool isOccupied = (*it).second;
             if (isOccupied)
@@ -46,10 +47,10 @@ int calcAdjacentFilled(const Coord coord, const Grid &grid) {
     return result;
 }
 
-Grid iter(const Grid &grid) {
-    Grid newGrid;
+Grid *iter(const Grid *grid) {
+    Grid *newGrid = new Grid();
 
-    for (auto seatInfo : grid) {
+    for (auto seatInfo : *grid) {
         Coord coord = seatInfo.first;
         bool isOccupied = seatInfo.second;
         int adjacentFilled = calcAdjacentFilled(coord, grid);
@@ -61,18 +62,20 @@ Grid iter(const Grid &grid) {
             if (adjacentFilled == 0)
                 newOccupied = true;
         }
-        newGrid[coord] = newOccupied;
+        (*newGrid)[coord] = newOccupied;
     }
 
     return newGrid;
 }
 
-int answer(Grid grid) {
+int answer(const Grid *gridInit) {
+    std::shared_ptr<const Grid> grid(gridInit);
+
     while (true) {
-        Grid newGrid = iter(grid);
-        if (newGrid == grid) {
+        std::shared_ptr<const Grid> newGrid(iter(grid.get()));
+        if (*(newGrid.get()) == *(grid.get())) {
             int full = 0;
-            for (auto seatInfo : grid) {
+            for (auto seatInfo : *(grid.get())) {
                 bool isOccupied = seatInfo.second;
                 if (isOccupied)
                     full++;
