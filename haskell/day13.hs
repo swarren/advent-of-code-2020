@@ -13,18 +13,26 @@ parse content = (time, busses)
         busnum s = Just $ read s
         busses = map busnum bussesS
 
-firstAtOrAfter :: Int -> Int -> Int
-firstAtOrAfter time busnum = t
+firstAtOrAfter :: Int -> Int -> (Int, Int)
+firstAtOrAfter time busnum = (t, busnum)
     where
         r = time `mod` busnum
         t = if r == 0 then time else time + (busnum - r)
 
+minBusAndTime :: (Int, Int) -> (Int, Int) -> (Int, Int)
+minBusAndTime (t1, busnum1) (t2, busnum2) =
+    if t1 < t2 then
+        (t1, busnum1)
+    else
+        (t2, busnum2)
+
 answer :: (Int, [Maybe Int]) -> Int
-answer (time, busses) = earliest
+answer (time, busses) = waitingTime * earliestBusnum
     where
         busnums = map M.fromJust $ filter M.isJust busses
         earliests = map (firstAtOrAfter time) busnums
-        earliest = foldl min time earliests
+        (earliestTime, earliestBusnum) = foldl1 minBusAndTime earliests
+        waitingTime = earliestTime - time
 
 main :: IO ()
 main = do
