@@ -56,9 +56,9 @@ std::ostream& operator<<(std::ostream& os, const Grid& grid)
         }
     }
 
-    std::cout <<  'x' << axisMin[0] << ".." << axisMax[0]
-              << " y" << axisMin[1] << ".." << axisMax[1]
-              << " z" << axisMin[2] << ".." << axisMax[2] << '\n';
+    std::cout <<  "x " << axisMin[0] << ".." << axisMax[0]
+              << " y " << axisMin[1] << ".." << axisMax[1]
+              << " z " << axisMin[2] << ".." << axisMax[2] << '\n';
 
     for (int z = axisMin[2]; z <= axisMax[2]; ++z) {
         std::cout << "z=" << z << '\n';

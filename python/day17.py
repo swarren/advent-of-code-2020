@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+debug = False
+
 with open("../input/day17.txt") as f:
     data = f.read().splitlines()
 
@@ -22,6 +24,8 @@ def dump(space):
     zps = [coord[2] for coord in space.keys()]
     zmin = min(zps)
     zmax = max(zps)
+    print(f'x {xmin}..{xmax} y {ymin}..{ymax} z {zmin}..{zmax}')
+    print()
     for z in range(zmin, zmax + 1):
         print(f'z={z}')
         for y in range(ymin, ymax + 1):
@@ -34,9 +38,10 @@ def dump(space):
             print(l)
         print('')
 
-#print('Before any cycles:')
-#print()
-#dump(space)
+if debug:
+    print('Before any cycles:')
+    print()
+    dump(space)
 for i in range(6):
     xps = [coord[0] for coord in space.keys()]
     xmin = min(xps)
@@ -67,7 +72,12 @@ for i in range(6):
                     if count == 3:
                         newspace[(x, y, z)] = '#'
     space = newspace
-    #print('After ' + str(i + 1) + ' cycles:')
-    #print()
-    #dump(space)
+    if debug:
+        if i == 0:
+            s = ''
+        else:
+            s = 's'
+        print('After ' + str(i + 1) + ' cycle' + s + ':')
+        print()
+        dump(space)
 print(len(space))
