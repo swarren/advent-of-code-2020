@@ -37,22 +37,22 @@ Grid *readParseInput(std::string fileName) {
     return grid;
 }
 
-template <typename T, std::size_t N, std::size_t IX>
-std::ostream& arrayToOstream(std::ostream& os, const std::array<T, N> &coord)
+template <typename T, std::size_t NUM_AXES, std::size_t AXIS>
+std::ostream& arrayToOstream(std::ostream& os, const std::array<T, NUM_AXES> &coord)
 {
-    os << coord[IX];
-    if constexpr(IX == N - 1) {
+    os << coord[AXIS];
+    if constexpr(AXIS == NUM_AXES - 1) {
         return os;
     } else {
         std::cout << ',';
-        return arrayToOstream<T, N, IX + 1>(os, coord);
+        return arrayToOstream<T, NUM_AXES, AXIS + 1>(os, coord);
     }
 }
 
-template <typename T, std::size_t N>
-std::ostream& operator<<(std::ostream& os, const std::array<T, N> &coord)
+template <typename T, std::size_t NUM_AXES>
+std::ostream& operator<<(std::ostream& os, const std::array<T, NUM_AXES> &coord)
 {
-    return arrayToOstream<T, N, 0>(os, coord);
+    return arrayToOstream<T, NUM_AXES, 0>(os, coord);
 }
 
 char axisName(std::size_t axis) {
@@ -64,28 +64,24 @@ char axisName(std::size_t axis) {
         return 'a' + axis;
 }
 
-struct GridDumpAxisInfo {
+struct GridDumpAxisLimits {
     int axisMin;
     int axisMax;
-    int axisVal;
 };
 
-template <std::size_t N, std::size_t AXIS>
-std::ostream& gridToOstream(std::ostream& os, const Grid& grid, GridDumpAxisInfo *gridDumpAxisInfo) {
+template <std::size_t NUM_AXES, std::size_t AXIS>
+std::ostream& gridToOstream(std::ostream& os, const Grid& grid, GridDumpAxisLimits *gridDumpAxisLimits, Coord &coord) {
     if constexpr(AXIS == 1) {
-        for (std::size_t axis = 2; axis < N; ++axis) {
+        for (std::size_t axis = 2; axis < NUM_AXES; ++axis) {
             if (axis != 2)
                 std::cout << ", ";
-            std::cout << axisName(axis) << '=' << gridDumpAxisInfo[axis].axisVal;
+            std::cout << axisName(axis) << '=' << coord[axis];
         }
         std::cout << '\n';
-        for (int y = gridDumpAxisInfo[1].axisMin; y <= gridDumpAxisInfo[1].axisMax; ++y) {
-            for (int x = gridDumpAxisInfo[0].axisMin; x <= gridDumpAxisInfo[0].axisMax; ++x) {
-                Coord coord;
+        for (int y = gridDumpAxisLimits[1].axisMin; y <= gridDumpAxisLimits[1].axisMax; ++y) {
+            for (int x = gridDumpAxisLimits[0].axisMin; x <= gridDumpAxisLimits[0].axisMax; ++x) {
                 coord[0] = x;
                 coord[1] = y;
-                for (std::size_t axis = 2; axis < N; ++axis)
-                    coord[axis] = gridDumpAxisInfo[axis].axisVal;
                 bool isOccupied = grid.find(coord) != grid.cend();
                 std::cout << (isOccupied ? '#' : '.');
             }
@@ -93,9 +89,9 @@ std::ostream& gridToOstream(std::ostream& os, const Grid& grid, GridDumpAxisInfo
         }
         std::cout << '\n';
     } else {
-        for (int i = gridDumpAxisInfo[AXIS].axisMin; i <= gridDumpAxisInfo[AXIS].axisMax; ++i) {
-            gridDumpAxisInfo[AXIS].axisVal = i;
-            gridToOstream<N, AXIS - 1>(os, grid, gridDumpAxisInfo);
+        for (int i = gridDumpAxisLimits[AXIS].axisMin; i <= gridDumpAxisLimits[AXIS].axisMax; ++i) {
+            coord[AXIS] = i;
+            gridToOstream<NUM_AXES, AXIS - 1>(os, grid, gridDumpAxisLimits, coord);
         }
     }
 
@@ -104,37 +100,38 @@ std::ostream& gridToOstream(std::ostream& os, const Grid& grid, GridDumpAxisInfo
 
 std::ostream& operator<<(std::ostream& os, const Grid& grid)
 {
-    GridDumpAxisInfo gridDumpAxisInfo[AXIS_COUNT];
+    GridDumpAxisLimits gridDumpAxisLimits[AXIS_COUNT];
 
     for (int axis = 0; axis < AXIS_COUNT; ++axis) {
-        gridDumpAxisInfo[axis].axisMin = std::numeric_limits<int>::max();
-        gridDumpAxisInfo[axis].axisMax = std::numeric_limits<int>::min();
+        gridDumpAxisLimits[axis].axisMin = std::numeric_limits<int>::max();
+        gridDumpAxisLimits[axis].axisMax = std::numeric_limits<int>::min();
     }
     
     for (const Coord &coord : grid) {
         for (int axis = 0; axis < AXIS_COUNT; ++axis) {
-            gridDumpAxisInfo[axis].axisMin = std::min(gridDumpAxisInfo[axis].axisMin, coord[axis]);
-            gridDumpAxisInfo[axis].axisMax = std::max(gridDumpAxisInfo[axis].axisMax, coord[axis]);
+            gridDumpAxisLimits[axis].axisMin = std::min(gridDumpAxisLimits[axis].axisMin, coord[axis]);
+            gridDumpAxisLimits[axis].axisMax = std::max(gridDumpAxisLimits[axis].axisMax, coord[axis]);
         }
     }
 
     for (int axis = 0; axis < AXIS_COUNT; ++axis) {
         if (axis)
             std::cout << ' ';
-        std::cout << axisName(axis) << ' ' << gridDumpAxisInfo[axis].axisMin << ".." << gridDumpAxisInfo[axis].axisMax;
+        std::cout << axisName(axis) << ' ' << gridDumpAxisLimits[axis].axisMin << ".." << gridDumpAxisLimits[axis].axisMax;
     }
     std::cout << '\n';
     std::cout << '\n';
 
-    return gridToOstream<AXIS_COUNT, AXIS_COUNT - 1>(os, grid, gridDumpAxisInfo);
+    Coord coord;
+    return gridToOstream<AXIS_COUNT, AXIS_COUNT - 1>(os, grid, gridDumpAxisLimits, coord);
 }
 
-template <std::size_t N, std::size_t AXIS>
+template <std::size_t NUM_AXES, std::size_t AXIS>
 int calcAdjacentFilled(const Coord coord, const Grid *grid, const std::set<Coord> &visited, std::set<Coord> &toVisit, bool isOccupied, Coord &newCoord) {
     if constexpr(AXIS == 1) {
         int result = 0;
         bool othersAllEqual = true;
-        for (std::size_t axis = 2; axis < N; ++axis) {
+        for (std::size_t axis = 2; axis < NUM_AXES; ++axis) {
             if (newCoord[axis] != coord[axis]) {
                 othersAllEqual = false;
                 break;
@@ -162,7 +159,7 @@ int calcAdjacentFilled(const Coord coord, const Grid *grid, const std::set<Coord
         int result = 0;
         for (int d = -1; d <= 1; ++d) {
             newCoord[AXIS] = coord[AXIS] + d;
-            result += calcAdjacentFilled<N, AXIS - 1>(coord, grid, visited, toVisit, isOccupied, newCoord);
+            result += calcAdjacentFilled<NUM_AXES, AXIS - 1>(coord, grid, visited, toVisit, isOccupied, newCoord);
         }
         return result;
     }

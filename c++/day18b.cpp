@@ -176,7 +176,12 @@ long eval(const std::string &expression) {
                 stack[l - 3] = t1;
                 stack.resize(l - 2);
             } else if (t2n && t1eof) {
+                if (debug) std::cout << "Reduce end of expression\n";
                 stack.resize(l - 1);
+                eof = true;
+                break;
+            } else if (t1eof) {
+                std::cout << "Bailing out at unexpected/unreduced EOF\n";
                 eof = true;
                 break;
             } else {
