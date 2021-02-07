@@ -32,8 +32,10 @@ def dump(space):
                 else:
                     l += '.'
             print(l)
-    print('')
+        print('')
 
+#print('Before any cycles:')
+#print()
 #dump(space)
 for i in range(6):
     xps = [coord[0] for coord in space.keys()]
@@ -65,5 +67,7 @@ for i in range(6):
                     if count == 3:
                         newspace[(x, y, z)] = '#'
     space = newspace
+    #print('After ' + str(i + 1) + ' cycles:')
+    #print()
     #dump(space)
 print(len(space))
