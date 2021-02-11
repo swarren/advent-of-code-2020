@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <experimental/vector>
 
 using Ingredient = std::string;
 using Ingredients = std::vector<Ingredient>;
@@ -96,11 +97,8 @@ auto answer(const Input &input) {
         const auto &[ingredient, allergens] = *pos;
         const auto &allergen = allergens[0];
         allergenToIngredient[allergen] = ingredient;
-        // C++ 20's std::vector::erase(value) doesn't appear implemented???
-        for (auto &[ingredient2, allergens2] : ingredientPossibleAllergens) {
-            auto it = std::remove(allergens2.begin(), allergens2.end(), allergen);
-            allergens2.erase(it, allergens2.end());
-        }
+        for (auto &[ingredient2, allergens2] : ingredientPossibleAllergens)
+            std::experimental::erase(allergens2, allergen);
         ingredientPossibleAllergens.erase(pos);
     }
 
