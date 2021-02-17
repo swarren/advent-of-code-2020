@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy3
 
 # Concept stolen from:
 # https://www.reddit.com/r/adventofcode/comments/kimluc/2020_day_23_solutions/ggrxrh6/?utm_source=share&utm_medium=web2x&context=3
@@ -42,4 +42,4 @@ for move in range(1, 10_000_001):
 
 cup_after_1 = cup_next[1]
 cup_after_2 = cup_next[cup_after_1]
-print(cup_after_1, cup_after_2, cup_after_1 * cup_after_2)
+print(cup_after_1 * cup_after_2)

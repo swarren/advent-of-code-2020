@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy3
 
 with open("../input/day15.txt") as f:
     data = list(map(int, f.read().split(',')))

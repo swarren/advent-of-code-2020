@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy3
 
 with open("../input/day13.txt") as f:
     data = f.read()

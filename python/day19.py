@@ -55,7 +55,7 @@ def is_match(s):
 count = 0
 for s in messages:
     m = is_match(s)
-    print(s, m)
+    #print(s, m)
     if m:
         count += 1
 print(count)

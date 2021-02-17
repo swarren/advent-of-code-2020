@@ -4,7 +4,7 @@ with open("../input/day18.txt") as f:
     data = f.read().splitlines()
 
 def parse_expr(s, i, indent):
-    print(indent + f'parse_expr("{s}", "{s[i:]}", {i})')
+    #print(indent + f'parse_expr("{s}", "{s[i:]}", {i})')
     result, i = parse_term(s, i, indent + '  ')
     while True:
         if i >= len(s) or s[i] != '*':
@@ -13,11 +13,11 @@ def parse_expr(s, i, indent):
         i += 1
         subresult, i = parse_term(s, i, indent + '  ')
         result *= subresult
-    print(indent + f'-> {result} {i}, "{s[i:]}"')
+    #print(indent + f'-> {result} {i}, "{s[i:]}"')
     return result, i
 
 def parse_term(s, i, indent):
-    print(indent + f'parse_term("{s}", "{s[i:]}", {i})')
+    #print(indent + f'parse_term("{s}", "{s[i:]}", {i})')
     result, i = parse_val(s, i, indent + '  ')
     while True:
         if i >= len(s) or s[i] != '+':
@@ -26,11 +26,11 @@ def parse_term(s, i, indent):
         i += 1
         subresult, i = parse_val(s, i, indent + '  ')
         result += subresult
-    print(indent + f'-> {result} {i}, "{s[i:]}"')
+    #print(indent + f'-> {result} {i}, "{s[i:]}"')
     return result, i
 
 def parse_val(s, i, indent):
-    print(indent + f'parse_val("{s}", "{s[i:]}", {i})')
+    #print(indent + f'parse_val("{s}", "{s[i:]}", {i})')
     if s[i] == '(':
         # consume s[i] == '('
         i += 1
@@ -41,7 +41,7 @@ def parse_val(s, i, indent):
         result = int(s[i])
         # consume s[i] == a digit
         i += 1
-    print(indent + f'-> {result} {i}, "{s[i:]}"')
+    #print(indent + f'-> {result} {i}, "{s[i:]}"')
     return result, i
 
 def calc(s):

@@ -90,4 +90,5 @@ for day in range(1, 101):
                     #print('    white->white')
                     pass
     black = new_black
-    print(f'  day {day} black tiles now {len(black)}')
+    #print(f'  day {day} black tiles now {len(black)}')
+print(len(black))
