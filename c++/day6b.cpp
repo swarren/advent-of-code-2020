@@ -5,21 +5,22 @@
 #include <vector>
 
 using Bits = std::bitset<26>;
+using Input = std::vector<std::string>;
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    std::vector<std::string> result;
+    Input input;
 
     std::string line;
     while (std::getline(file, line)) {
-        result.push_back(line);
+        input.push_back(line);
     }
     file.close();
 
-    return result;
+    return input;
 }
 
-int answer(const std::vector<std::string> &input) {
+int answer(const Input &input) {
     int result = 0;
 
     Bits accum;
@@ -41,8 +42,6 @@ int answer(const std::vector<std::string> &input) {
 }
 
 int main(void) {
-    const auto input = readParseInput("../input/day6.txt");
-    auto answer_ = answer(input);
-    std::cout << answer_ << '\n';
+    std::cout << answer(readParseInput("../input/day6.txt")) << '\n';
     return 0;
 }

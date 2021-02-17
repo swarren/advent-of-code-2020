@@ -6,16 +6,18 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string> readParseInput(std::string fileName) {
+using Input = std::vector<std::string>;
+
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    std::vector<std::string> result;
+    Input input;
 
     std::string line;
     while (std::getline(file, line))
-        result.push_back(line);
+        input.push_back(line);
     file.close();
 
-    return result;
+    return input;
 }
 
 template <typename Iterator>
@@ -35,9 +37,7 @@ constexpr int countTrees(const std::vector<std::string> &input, int dX, int dY) 
     return countTrees;
 }
 
-int main(void) {
-    const auto input = readParseInput("../input/day3.txt");
-
+long answer(const Input &input) {
     const std::pair<int, int> slopes[] = {
         std::make_pair<int, int>(1, 1),
         std::make_pair<int, int>(3, 1),
@@ -48,8 +48,10 @@ int main(void) {
     std::vector<int> counts;
     auto genCount = [&input = std::as_const(input)](const auto &slope){ return countTrees(input, slope.first, slope.second); };
     std::transform(std::cbegin(slopes), std::cend(slopes), std::back_inserter(counts), genCount);
-    const auto answer = std::accumulate(counts.cbegin(), counts.cend(), long(1), std::multiplies<>());
-    std::cout << answer << std::endl;
+    return std::accumulate(counts.cbegin(), counts.cend(), long(1), std::multiplies<>());
+}
 
+int main(void) {
+    std::cout << answer(readParseInput("../input/day3.txt")) << '\n';
     return 0;
 }

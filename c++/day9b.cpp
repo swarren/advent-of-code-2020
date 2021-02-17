@@ -6,7 +6,7 @@
 
 using Input = std::vector<int>;
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
     Input input;
 
@@ -36,7 +36,7 @@ bool isSum(const Input &input, int pos) {
     return false;
 }
 
-int answer(Input &input) {
+int answer(Input input) {
     int invalidNumber = -1;
     for (int pos = 25; pos < input.size(); ++pos) {
         if (!isSum(input, pos)) {
@@ -62,7 +62,6 @@ int answer(Input &input) {
 }
 
 int main(void) {
-    Input input = readParseInput("../input/day9.txt");
-    std::cout << answer(input) << '\n';
+    std::cout << answer(readParseInput("../input/day9.txt")) << '\n';
     return 0;
 }

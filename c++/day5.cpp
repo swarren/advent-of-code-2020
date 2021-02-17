@@ -3,9 +3,11 @@
 #include <string>
 #include <vector>
 
-auto readParseInput(std::string fileName) {
+using Input = std::vector<int>;
+
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    std::vector<int> result;
+    Input input;
 
     std::string line;
     while (std::getline(file, line)) {
@@ -15,21 +17,19 @@ auto readParseInput(std::string fileName) {
             if ((c == 'B') || (c == 'R'))
                 v |= 1;
         }
-        result.push_back(v);
+        input.push_back(v);
     }
     file.close();
 
-    return result;
+    return input;
 }
 
-int answer(std::vector<int> &input) {
+int answer(Input input) {
     sort(input.begin(), input.end());
     return input.back();
 }
 
 int main(void) {
-    auto input = readParseInput("../input/day5.txt");
-    auto answer_ = answer(input);
-    std::cout << answer_ << '\n';
+    std::cout << answer(readParseInput("../input/day5.txt")) << '\n';
     return 0;
 }

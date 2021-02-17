@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -6,7 +7,7 @@
 
 using Input = std::vector<long>;
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
     Input input;
 
@@ -29,8 +30,8 @@ long combos(int l) {
     return ret;
 }
 
-long answer(Input &input) {
-    std::sort(input.begin(), input.end());
+long answer(Input input) {
+    std::ranges::sort(input);
 
     long combinations = 1;
     long diff1Count = 0;
@@ -49,7 +50,6 @@ long answer(Input &input) {
 }
 
 int main(void) {
-    Input input = readParseInput("../input/day10.txt");
-    std::cout << answer(input) << '\n';
+    std::cout << answer(readParseInput("../input/day10.txt")) << '\n';
     return 0;
 }

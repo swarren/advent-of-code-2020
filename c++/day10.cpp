@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -6,7 +7,7 @@
 
 using Input = std::vector<int>;
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
     Input input;
 
@@ -18,8 +19,8 @@ auto readParseInput(std::string fileName) {
     return input;
 }
 
-int answer(Input &input) {
-    std::sort(input.begin(), input.end());
+int answer(Input input) {
+    std::ranges::sort(input);
 
     int diff1Count = 0;
     int diff3Count = 0;
@@ -36,7 +37,6 @@ int answer(Input &input) {
 }
 
 int main(void) {
-    Input input = readParseInput("../input/day10.txt");
-    std::cout << answer(input) << '\n';
+    std::cout << answer(readParseInput("../input/day10.txt")) << '\n';
     return 0;
 }

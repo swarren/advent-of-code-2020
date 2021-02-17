@@ -1,48 +1,54 @@
 #include <algorithm>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <sstream>
+#include <regex>
 #include <string>
 #include <vector>
 
 struct Rule {
-    size_t min;
-    size_t max;
+    int min;
+    int max;
     char c;
     std::string pw;
 
-    bool valid() {
-        size_t count = std::count(this->pw.begin(), this->pw.end(), this->c);
+    bool valid() const {
+        auto count = std::ranges::count(this->pw, this->c);
         return count >= min && count <= max;
     }
 };
 
-std::vector<Rule> readParseInput(std::string fileName) {
+using Input = std::vector<Rule>;
+
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    std::vector<Rule> result;
+    Input input;
+
+    // 9-12 q: qqqxhnhdmqqqqjz
+    std::regex lineRegex(R"((\d+)-(\d+) (.): (.*)$)");
 
     std::string line;
     while (std::getline(file, line)) {
-        std::istringstream iss(line);
-        Rule r;
-        char c;
-        // 9-12 q: qqqxhnhdmqqqqjz
-        iss >> r.min >> c >> r.max >> r.c >> c >> r.pw;
-        result.push_back(r);
+        std::smatch match;
+        if (!std::regex_match(line, match, lineRegex))
+            continue;
+        input.emplace_back(Rule{
+            atoi(match.str(1).c_str()),
+            atoi(match.str(2).c_str()),
+            match.str(3)[0],
+            match[4],
+        });
     }
     file.close();
 
-    return result;
+    return input;
+}
+
+int answer(const Input &input) {
+    return std::ranges::count_if(input, std::bind(&Rule::valid, std::placeholders::_1));
 }
 
 int main(void) {
-    auto input = readParseInput("../input/day2.txt");
-
-    int countValid = 0;
-    auto f = [&countValid](Rule &r) { if (r.valid()) countValid++; };
-    for (auto r : input)
-        f(r);
-    std::cout << countValid << std::endl; 
-
+    std::cout << answer(readParseInput("../input/day2.txt")) << '\n';
     return 0;
 }

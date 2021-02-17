@@ -5,21 +5,21 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string> readParseInput(std::string fileName) {
+using Input = std::vector<std::string>;
+
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    std::vector<std::string> result;
+    Input input;
 
     std::string line;
     while (std::getline(file, line))
-        result.push_back(line);
+        input.push_back(line);
     file.close();
 
-    return result;
+    return input;
 }
 
-int main(void) {
-    auto input = readParseInput("../input/day3.txt");
-
+int answer(const Input &input) {
     int countTrees = 0;
     int xIndex = 0;
     for (auto itLine = input.begin(); itLine != input.end(); ++itLine) {
@@ -27,7 +27,10 @@ int main(void) {
             countTrees++;
         xIndex += 3;
     }
-    std::cout << countTrees << std::endl;
+    return countTrees;
+}
 
+int main(void) {
+    std::cout << answer(readParseInput("../input/day3.txt")) << '\n';
     return 0;
 }

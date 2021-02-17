@@ -6,7 +6,7 @@
 
 using Input = std::vector<int>;
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
     Input input;
 

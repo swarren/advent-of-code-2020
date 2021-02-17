@@ -1,37 +1,39 @@
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
-std::vector<int> readParseInput(std::string fileName) {
-    std::ifstream file(fileName);
-    std::vector<int> result;
+using Input = std::vector<int>;
 
-    std::string line;
-    while (std::getline(file, line)) {
-        std::istringstream iss(line);
+Input readParseInput(std::string fileName) {
+    std::ifstream file(fileName);
+    Input input;
+
+    do {
         int num;
-        iss >> num;
-        result.push_back(num);
-    }
+        file >> num;
+        input.push_back(num);
+    } while (!file.eof());
     file.close();
 
-    return result;
+    return input;
+}
+
+int answer(const Input &input) {
+    for (auto it0 = input.begin(); it0 != input.end(); ++it0) {
+        for (auto it1 = it0 + 1; it1 != input.end(); ++it1) {
+            for (auto it2 = it1 + 1; it2 != input.end(); ++it2) {
+                int sum = *it0 + *it1 + *it2;
+                if (sum == 2020) {
+                    return *it0 * *it1 * *it2;
+                }
+            }
+        }
+    }
+    return -1;
 }
 
 int main(void) {
-    auto input = readParseInput("../input/day1.txt");
-
-    for (auto it0 = input.begin(); it0 != input.end(); ++it0) {
-        for (auto it1 = it0 + 1; it1 != input.end(); ++it1) {
-	    for (auto it2 = it1 + 1; it2 != input.end(); ++it2) {
-		int sum = *it0 + *it1 + *it2;
-		if (sum == 2020) {
-		    std::cout << *it0 * *it1 * *it2 << std::endl; 
-		}
-	    }
-	}
-    }
+    std::cout << answer(readParseInput("../input/day1.txt")) << '\n';
     return 0;
 }

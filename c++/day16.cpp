@@ -30,7 +30,7 @@ void parseTicket(std::string line, Ticket &ticket) {
     }
 }
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
     Input input;
     std::string line;

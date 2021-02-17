@@ -47,7 +47,7 @@ class Nop : public Instruction {
 
 using Program = std::vector<Instruction *>;
 
-auto readParseInput(std::string fileName) {
+Program readParseInput(std::string fileName) {
     std::ifstream file(fileName);
     Program program;
 

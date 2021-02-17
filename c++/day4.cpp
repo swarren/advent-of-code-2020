@@ -7,18 +7,18 @@
 using Passport = std::map<std::string, std::string>;
 using Input = std::vector<Passport>;
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    Input result;
+    Input input;
     Passport *mPtr;
 
-    mPtr = &result.emplace_back();
+    mPtr = &input.emplace_back();
 
     std::string line;
     while (std::getline(file, line)) {
         auto length = line.length();
         if (!length) {
-            mPtr = &result.emplace_back();
+            mPtr = &input.emplace_back();
             continue;
         }
         std::string::size_type parsePos = 0;
@@ -41,7 +41,7 @@ auto readParseInput(std::string fileName) {
     }
     file.close();
 
-    return result;
+    return input;
 }
 
 const std::string requiredFields[] = {
@@ -76,9 +76,6 @@ int answer(const Input &input) {
 }
 
 int main(void) {
-    const auto input = readParseInput("../input/day4.txt");
-    const auto answer_ = answer(input);
-    std::cout << answer_ << '\n';
-
+    std::cout << answer(readParseInput("../input/day4.txt")) << '\n';
     return 0;
 }

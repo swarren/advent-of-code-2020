@@ -9,9 +9,9 @@ using ChildBag = std::pair<int, std::string>;
 using BagContent = std::vector<ChildBag>;
 using Input = std::map<std::string, BagContent>;
 
-auto readParseInput(std::string fileName) {
+Input readParseInput(std::string fileName) {
     std::ifstream file(fileName);
-    Input result;
+    Input input;
 
     std::string line;
     while (std::getline(file, line)) {
@@ -49,11 +49,11 @@ auto readParseInput(std::string fileName) {
             }
         }
 
-        result[thisBagName] = bagContent;
+        input[thisBagName] = bagContent;
     }
     file.close();
 
-    return result;
+    return input;
 }
 
 int calcBagCount(const Input &input, const std::string &bagName) {
@@ -77,9 +77,6 @@ int answer(const Input &input) {
 }
 
 int main(void) {
-    const auto input = readParseInput("../input/day7.txt");
-    const auto answer_ = answer(input);
-    std::cout << answer_ << '\n';
-
+    std::cout << answer(readParseInput("../input/day7.txt")) << '\n';
     return 0;
 }

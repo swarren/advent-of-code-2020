@@ -34,7 +34,7 @@ int calcAdjacentFilled(const Coord coord, const Floor &floor, const std::set<Coo
 
     int result = 0;
     bool isOccupied = floor.contains(coord);
-    
+
     for (const auto &offset : offsets) {
         Coord neighbour = {coord[0] + offset[0], coord[1] + offset[1]};
         if (floor.contains(neighbour))
