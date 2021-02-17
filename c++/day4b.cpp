@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -145,12 +146,7 @@ bool isValidPassport(const Passport &passport) {
 }
 
 int answer(const Input &input) {
-    int validPassports = 0;
-    for (auto passport : input) {
-        if (isValidPassport(passport))
-            validPassports++;
-    }
-    return validPassports;
+    return std::ranges::count_if(input, [](const Passport &p) { return isValidPassport(p); });
 }
 
 int main(void) {

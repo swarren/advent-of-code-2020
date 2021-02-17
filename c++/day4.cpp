@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -54,7 +55,7 @@ const std::string requiredFields[] = {
     "pid",
 };
 
-bool isValidPassport(int i, const Passport &passport) {
+bool isValidPassport(const Passport &passport) {
     for (auto requiredField : requiredFields) {
         if (passport.find(requiredField) == passport.cend())
             return false;
@@ -63,16 +64,7 @@ bool isValidPassport(int i, const Passport &passport) {
 }
 
 int answer(const Input &input) {
-    int validPassports = 0;
-
-    int i = 0;
-    for (auto passport : input) {
-        i++;
-        if (isValidPassport(i, passport))
-            validPassports++;
-    }
-
-    return validPassports;
+    return std::ranges::count_if(input, [](const Passport &p) { return isValidPassport(p); });
 }
 
 int main(void) {

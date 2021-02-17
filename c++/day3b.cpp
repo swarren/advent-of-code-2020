@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <numeric>
+#include <ranges>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -46,8 +47,8 @@ long answer(const Input &input) {
         std::make_pair<int, int>(1, 2)
     };
     std::vector<int> counts;
-    auto genCount = [&input = std::as_const(input)](const auto &slope){ return countTrees(input, slope.first, slope.second); };
-    std::transform(std::cbegin(slopes), std::cend(slopes), std::back_inserter(counts), genCount);
+    auto genCount = [&input](const auto &slope){ return countTrees(input, slope.first, slope.second); };
+    std::ranges::transform(slopes, std::back_inserter(counts), genCount);
     return std::accumulate(counts.cbegin(), counts.cend(), long(1), std::multiplies<>());
 }
 
