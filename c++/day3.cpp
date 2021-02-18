@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <sstream>
+#include <ranges>
 #include <string>
 #include <vector>
 
@@ -20,14 +20,13 @@ Input readParseInput(std::string fileName) {
 }
 
 int answer(const Input &input) {
-    int countTrees = 0;
-    int xIndex = 0;
-    for (auto itLine = input.begin(); itLine != input.end(); ++itLine) {
-        if ((*itLine)[xIndex % (*itLine).length()] == '#')
-            countTrees++;
-        xIndex += 3;
-    }
-    return countTrees;
+    return std::ranges::count_if(
+        input,
+        [xIndex=-3] (const std::string &line) mutable {
+            xIndex += 3;
+            return line[xIndex % line.length()] == '#';
+        }
+    );
 }
 
 int main(void) {

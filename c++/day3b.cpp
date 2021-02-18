@@ -1,9 +1,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <numeric>
 #include <ranges>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -27,29 +25,31 @@ void safe_advance(Iterator& it, Iterator const& end, size_t n) {
         ++it;
 }
 
-constexpr int countTrees(const std::vector<std::string> &input, int dX, int dY) {
-    int countTrees = 0;
-    int xIndex = 0;
-    for (auto itLine = input.cbegin(); itLine != input.cend(); safe_advance(itLine, input.cend(), dY)) {
-        if ((*itLine)[xIndex % (*itLine).length()] == '#')
-            countTrees++;
-        xIndex += dX;
-    }
-    return countTrees;
+constexpr int countTrees(const std::vector<std::string> &input, const int dX, const int dY) {
+    return std::ranges::count_if(
+        input,
+        [y=-1, xIndex=-dX, &dX, &dY] (const std::string &line) mutable {
+            y++;
+            if (y % dY)
+                return false;
+            xIndex += dX;
+            return line[xIndex % line.length()] == '#';
+        }
+    );
 }
 
 long answer(const Input &input) {
     const std::pair<int, int> slopes[] = {
-        std::make_pair<int, int>(1, 1),
-        std::make_pair<int, int>(3, 1),
-        std::make_pair<int, int>(5, 1),
-        std::make_pair<int, int>(7, 1),
-        std::make_pair<int, int>(1, 2)
+        std::make_pair(1, 1),
+        std::make_pair(3, 1),
+        std::make_pair(5, 1),
+        std::make_pair(7, 1),
+        std::make_pair(1, 2)
     };
-    std::vector<int> counts;
-    auto genCount = [&input](const auto &slope){ return countTrees(input, slope.first, slope.second); };
-    std::ranges::transform(slopes, std::back_inserter(counts), genCount);
-    return std::accumulate(counts.cbegin(), counts.cend(), long(1), std::multiplies<>());
+    long answer = 1;
+    for (const auto &[dX, dY] : slopes)
+        answer *= countTrees(input, dX, dY);
+    return answer;
 }
 
 int main(void) {
