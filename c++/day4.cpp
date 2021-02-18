@@ -56,11 +56,13 @@ const std::string requiredFields[] = {
 };
 
 bool isValidPassport(const Passport &passport) {
-    for (auto requiredField : requiredFields) {
-        if (passport.find(requiredField) == passport.cend())
-            return false;
-    }
-    return true;
+    return std::all_of(
+        std::begin(requiredFields),
+        std::end(requiredFields),
+        [passport] (const auto &requiredField) {
+            return passport.find(requiredField) != passport.end();
+        }
+    );
 }
 
 int answer(const Input &input) {

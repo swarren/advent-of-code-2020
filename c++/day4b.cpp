@@ -133,16 +133,18 @@ const std::pair<std::string, fieldValidityFunc> fieldValidityChecks[] = {
 };
 
 bool isValidPassport(const Passport &passport) {
-    for (auto fieldValidityCheck : fieldValidityChecks) {
-        const auto &fieldName = fieldValidityCheck.first;
-        const auto &checkFunc = fieldValidityCheck.second;
-        auto it = passport.find(fieldName);
-        if (it == passport.cend())
-            return false;
-        if (!checkFunc((*it).second))
-            return false;
-    }
-    return true;
+    return std::all_of(
+        std::begin(fieldValidityChecks),
+        std::end(fieldValidityChecks),
+        [passport] (const auto requiredField) {
+            const auto &[fieldName, checkFunc] = requiredField;
+            auto it = passport.find(fieldName);
+            if (it == passport.cend())
+                return false;
+            const auto &fieldVal = it->second;
+            return checkFunc(fieldVal);
+        }
+    );
 }
 
 int answer(const Input &input) {
