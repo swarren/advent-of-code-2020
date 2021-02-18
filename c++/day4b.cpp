@@ -2,13 +2,13 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <set>
 #include <sstream>
 #include <string>
 #include <vector>
 
-using Passport = std::map<std::string, std::string>;
+using Passport = std::unordered_map<std::string, std::string>;
 using Input = std::vector<Passport>;
 
 Input readParseInput(std::string fileName) {
